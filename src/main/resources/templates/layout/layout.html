@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:fragment="head">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="apple-touch-icon" sizes="76x76" th:href="@{/img/favicon.png}">
+	<link rel="icon" type="image/png" th:href="@{/img/favicon.png}">
+	<title> APP Template</title>
+
+	<link rel="stylesheet" type="text/css" th:href="@{/css/normalize/normalize.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/fontawesome/all.min.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap/bootstrap.min.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/nprogress/nprogress.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/select2/select2-bootstrap4.min.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/alert/sweetalert2.min.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/dateranger/daterangepicker.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/datatables/dataTables.bootstrap4.min.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/preload/preload.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/theme/custom.css}">
+	<script type="text/javascript" th:src="@{/js/jquery/jquery.min.js}"></script>
+</head>
+
+<div th:fragment="defaultPreload">
+	<script type="text/javascript" th:src="@{/js/preload/preload.js}"></script>
+</div>
+<div th:fragment="AjaxPreload">
+	<script type="text/javascript" th:src="@{/js/preload/preloadAjax.js}"></script>
+</div>
+
+<body>
+	<div id="preload" th:fragment="preload">
+		<div id="mensajeCarga">
+			<span>Cargando, por favor espere...</span>
+		</div>
+		<div id="loader"></div>
+	</div>
+
+
+	<!-- top navigation -->
+	<div class="top_nav" th:fragment="nav_top">
+		<div class="nav_menu">
+			<div class="nav toggle">
+				<a id="menu_toggle"><i class="fa fa-bars"></i></a>
+			</div>
+			<nav class="nav navbar-nav">
+				<ul class=" navbar-right">
+					<li class="nav-item dropdown open" style="padding-left: 15px;">
+						<a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true"
+							id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+							<img th:src="@{/img/user.png}" alt=""><span sec:authentication="name"></span>
+						</a>
+						<div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+							<a class="dropdown-item" th:href="@{/profile_settings}"><i class="fa-regular fa-address-card"></i>
+								Perfil</a>
+							<a class="dropdown-item" th:href="@{/logout}"><i class="fa fa-sign-out pull-right"></i>
+								Cerrar Sesión</a>
+						</div>
+					</li>
+
+					<li role="presentation" class="nav-item dropdown open">
+						<a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1"
+							data-toggle="dropdown" aria-expanded="false">
+							<i class="fa-solid fa-bell"></i>
+							<span class="badge bg-green">6</span>
+						</a>
+						<ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
+							<li class="nav-item">
+								<a class="dropdown-item">
+									<span class="image"><img th:src="@{/img/user.png}" alt="Profile Image" /></span>
+									<span>
+										<span sec:authentication="name"></span>
+										<span class="time">3 mins...</span>
+									</span>
+									<span class="message">
+										Mensaje...
+									</span>
+								</a>
+							</li>
+							<li class="nav-item">
+								<div class="text-center">
+									<a class="dropdown-item">
+										<strong>Mostrar todo</strong>
+										<i class="fa fa-angle-right"></i>
+									</a>
+								</div>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+	<!-- /top navigation -->
+
+	<!-- side navigation-->
+	<div class="col-md-3 left_col" th:fragment="nav_left">
+		<div class="left_col scroll-view">
+			<div class="navbar nav_title" style="border: 0;">
+				<a th:href="@{${session.home}}" class="site_title"><i class="fa-solid fa-house"></i>
+					<span>TEMPLATE</span></a>
+			</div>
+			<div class="clearfix"></div>
+			<!-- menu profile info -->
+			<div class="profile clearfix">
+				<div class="profile_pic">
+					<img th:src="@{/img/user.png}" alt="..." class="img-circle profile_img">
+				</div>
+				<div class="profile_info">
+					<span>Bienvenido,</span>
+					<h2 sec:authentication="name"></h2>
+				</div>
+			</div>
+			<!-- /menu profile info -->
+			<br />
+			<!-- sidebar menu -->
+			<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+				<div class="menu_section" th:each="encabezado , itr : ${session.lstPerfilMenu}">
+					<h3 th:text="${encabezado.menu.descripcion}">error</h3>
+					<ul class="nav side-menu" th:each="item, irt2 : ${encabezado.menu.menuVistas}">
+						<li th:if="${item.vista.tipo == 'I'}"><a th:href="@{${item.vista.url}}"><i
+									th:class="${item.vista.icono}"></i> <span class="label label-success pull-right"
+									th:text="${item.vista.descripcion}">
+									----</span></a></li>
+						<li th:if="${item.vista.tipo == 'S'}"><a><i th:class="${item.vista.icono}"></i> error <span
+									class="fa fa-chevron-down"></span></a>
+							<ul class="nav child_menu" th:each="itemSub, irtSub : ${item.vista.vistas}">
+								<li><a th:href="@{${itemSub.url}}"><span th:text="${itemSub.descripcion}"></span></a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- /sidebar menu -->
+		</div>
+	</div>
+
+
+	<div th:fragment="javascript">
+		<script type="text/javascript" th:src="@{/js/bootstrap/bootstrap.bundle.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/jquery/jquery.validate.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/nprogress/nprogress.js}"></script>
+		<script type="text/javascript" th:src="@{/js/bootstrap/bootstrap-progressbar.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/dataranger/moment.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/dataranger/daterangepicker.js}"></script>
+		<script type="text/javascript" th:src="@{/js/datatables/datatables.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/dataTables/dataTables.buttons.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/dataTables/buttons.html5.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/select2/select2.full.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/alert/sweetalert2.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/autosize/autosize.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/alert/alert.js}"></script>
+		<script type="text/javascript" th:src="@{/js/theme/custom.js}"></script>
+		<script type="text/javascript" th:src="@{/js/init/init.js}"></script>
+		<script th:inline="javascript">
+			/******TOAST*****/
+			var Toast_message_warning = /*[[${warningToast}]]*/'default';
+			if (Toast_message_warning != null) {
+				warningToast(Toast_message_warning);
+			}
+
+			var Toast_message_info = /*[[${infoToast}]]*/'default';
+			if (Toast_message_info != null) {
+				infoToast(Toast_message_info);
+			}
+
+			var Toast_message_error = /*[[${errorToast}]]*/'default';
+			if (Toast_message_error != null) {
+				errorToast(Toast_message_error);
+			}
+
+			var Toast_message_success = /*[[${successToast}]]*/'default';
+			if (Toast_message_success != null) {
+				successToast(Toast_message_success);
+			}
+
+			/******ALERTS*****/
+			var Swal_message_warning = /*[[${Swal_message_warning}]]*/'default';
+			if (Swal_message_warning != null) {
+				warningSwal(Swal_message_warning);
+			}
+
+			var Swal_message_info = /*[[${Swal_message_info}]]*/'default';
+			if (Swal_message_info != null) {
+				infoSwal(Swal_message_info);
+			}
+
+			var Swal_message_error = /*[[${Swal_message_error}]]*/'default';
+			if (Swal_message_error != null) {
+				errorSwal(Swal_message_error);
+			}
+
+			var Swal_message_success = /*[[${Swal_message_success}]]*/'default';
+			if (Swal_message_success != null) {
+				successSwal(Swal_message_success);
+			}
+		</script>
+	</div>
+</body>
+
+</html>
