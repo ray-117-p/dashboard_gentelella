@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="layout/layout :: head">
+</head>
+
+<body class="nav-md">
+	<div class="container body">
+		<div class="main_container">
+			<!-- side navigation -->
+			<div th:replace="layout/layout :: nav_left"></div>
+			<!-- /side navigation -->
+			<!-- top navigation -->
+			<div th:replace="layout/layout :: nav_top"></div>
+			<!-- /top navigation -->
+			<!-- page content -->
+			<div class="right_col" role="main" th:if="${fragment}">
+				<div th:replace="${fragment}"></div>
+			</div>
+			<!-- /page content -->
+			<!-- footer content -->
+			<footer>
+				<div class="pull-right">
+					APP - <a href="https://www.per-tec.com/" target="_blank">Desing PER-TEC</a>
+				</div>
+				<div class="clearfix"></div>
+			</footer>
+			<!-- /footer content -->
+		</div>
+	</div>
+	<div th:replace="layout/layout :: javascript"></div>
+</body>
+
+</html>
